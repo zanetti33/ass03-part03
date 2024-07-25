@@ -5,7 +5,7 @@ import (
 	"math/rand"
 )
 
-func Oracle(guessChannel chan Guess, responseChannels []chan Response, numPlayers int, maxNumber int, endChannel chan int) {
+func Oracle(guessChannel chan Guess, responseChannels []chan Response, numPlayers int, maxNumber int) {
 	magicNumber := rand.Intn(maxNumber)
 	someoneGuessedCorrectly := false
 	var winningPlayer int
@@ -22,11 +22,11 @@ func Oracle(guessChannel chan Guess, responseChannels []chan Response, numPlayer
 			oracleLog("Player ", guess.guesser, " guessed the number ", guess.value)
 			// someone guesses, if he is the first he wins, other that guessed correctly will still lose
 			if !someoneGuessedCorrectly && guess.value == magicNumber {
-				oracleLog("Player ", guess.guesser, " guessed the number ", magicNumber, "!")
+				oracleLog("Player ", guess.guesser, " guessed the magic number!")
 				someoneGuessedCorrectly = true
 				winningPlayer = guess.guesser
 			}
-			guesses = append(guesses, <-guessChannel)
+			guesses = append(guesses, guess)
 		}
 		oracleLog("Sending response to each player")
 		if someoneGuessedCorrectly {
@@ -50,7 +50,6 @@ func Oracle(guessChannel chan Guess, responseChannels []chan Response, numPlayer
 			}
 		}
 	}
-	endChannel <- 0
 }
 
 func oracleLog(a ...any) {

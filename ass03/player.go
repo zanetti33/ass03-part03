@@ -27,7 +27,7 @@ func Player(guessChannel chan Guess, responseChannel chan Response, id int, maxN
 		} else if response == TooHigh {
 			upperLimit = guessValue
 		}
-		over = response == Won || response == Lost
+		over = (response == Won || response == Lost)
 	}
 }
 

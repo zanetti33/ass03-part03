@@ -51,8 +51,8 @@ func main() {
 		toPlayerChannels = append(toPlayerChannels, toPlayerChannel)
 	}
 
-	var endChannel chan int
-	go Oracle(toOracleChannel, toPlayerChannels, numPlayers, maxNumber, endChannel)
+	endChannel := make(chan int)
+	go Oracle(toOracleChannel, toPlayerChannels, numPlayers, maxNumber)
 
 	<-endChannel
 
